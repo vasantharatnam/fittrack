@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { AnimatePresence, motion } from "framer-motion"
-import { Activity , ArrowLeft , ArrowRight,  CheckCircle2} from "lucide-react";
-import { useMemo , useState} from 'react';
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+import { Activity, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { StepIndicator } from "@/components/shared/StepIndicator";
 import { ROUTES } from "@/lib/constants";
 import { ActivityLevelStep } from "../steps/ActivityLevelStep";
-import CreateAccountStep from '../steps/CreateAccountStep';
+import CreateAccountStep from "../steps/CreateAccountStep";
 import { FitnessGoalsStep } from "../steps/FitnessGoalsStep";
 import { PersonalDetailsStep } from "../steps/PersonalDetailsStep";
 import ProfileSetupStep from "../steps/ProfileSetupStep";
@@ -20,56 +20,130 @@ import type { SignupFormData } from "../type";
 const TOTAL_STEPS = 5;
 
 const stepTitles: Record<SignupStep, string> = {
-    1: "Create Account",
-    2: "Personal Details",
-    3: "Fitness Goals",
-    4: "Activity Level",
-    5: "Profile Setup"
+  1: "Create Account",
+  2: "Personal Details",
+  3: "Fitness Goals",
+  4: "Activity Level",
+  5: "Profile Setup",
 };
 
+export default function SignupFlow() {
+  const [currentStep, setCurrentStep] = useState<SignupStep>(1);
+  const [formData, setFormData] = useState<SignupFormData>(
+    defaultSignupFormData,
+  );
 
-export default function SignupFlow(){
-     
-    const [currentStep , setCurrentStep] = useState<SignupStep>(1);
-    const [formData , setFormData ] = useState<SignupFormData>(defaultSignupFormData);
+  const [stepValidity, setStepValidity] = useState<Record<SignupStep, boolean>>(
+    {
+      1: false,
+      2: true,
+      3: true,
+      4: true,
+      5: true,
+    },
+  );
 
-    const [isCompleted , setIsCompleted] =  useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
-    const canGoBack = currentStep > 1;
+  const canGoBack = currentStep > 1;
 
-    const  currentStepTitle = useMemo( ()=> stepTitles[currentStep] , [currentStep]);
+  const currentStepTitle = useMemo(
+    () => stepTitles[currentStep],
+    [currentStep],
+  );
 
-    function goBack(){
-         if(!canGoBack){
-            return;
-         }
-         setCurrentStep((previousStep) => (previousStep-1) as SignupStep)
+  const handleCreateAccountChange = useCallback(
+  (
+    values: {
+      fullName: string;
+      email: string;
+      password: string;
+      confirmPassword: string;
+    },
+    isValid: boolean
+  ) => {
+    setFormData((previousData) => {
+      const isSame =
+        previousData.fullName === values.fullName &&
+        previousData.email === values.email &&
+        previousData.password === values.password &&
+        previousData.confirmPassword === values.confirmPassword;
+
+      if (isSame) {
+        return previousData;
+      }
+
+      return {
+        ...previousData,
+        ...values,
+      };
+    });
+
+    setStepValidity((previousValidity) => {
+      if (previousValidity[1] === isValid) {
+        return previousValidity;
+      }
+
+      return {
+        ...previousValidity,
+        1: isValid,
+      };
+    });
+  },
+  []
+);
+
+  function goBack() {
+    if (!canGoBack) {
+      return;
+    }
+    setCurrentStep((previousStep) => (previousStep - 1) as SignupStep);
+  }
+
+  async function goNext() {
+    if (!stepValidity[currentStep]) return;
+
+    if (currentStep === TOTAL_STEPS) {
+      localStorage.setItem("fittrack-profile", JSON.stringify(formData));
+
+      try {
+        await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      } catch {
+        // LocalStorage is the fallback for this assignment.
+      }
+
+      setIsCompleted(true);
+      return;
     }
 
-    function goNext(){
-        if(currentStep === TOTAL_STEPS){
-          localStorage.setItem("fittrack-profile", JSON.stringify(formData));
-          setIsCompleted(true);
-          return;
-        }
+    setCurrentStep((previousStep) => (previousStep + 1) as SignupStep);
+  }
 
-        setCurrentStep((previousStep) => (previousStep + 1) as SignupStep);
+  function skipStep() {
+    if (currentStep === 4 || currentStep === 5) {
+      goNext();
     }
+  }
 
-    function skipStep(){
-        if(currentStep === 4 || currentStep === 5){
-            goNext()
-        }
-    }
-
-      function renderStep() {
+  function renderStep() {
     switch (currentStep) {
       case 1:
         return (
-          <CreateAccountStep
-            fullName={formData.fullName}
-            email={formData.email}
-          />
+         <CreateAccountStep
+          values={{
+           fullName: formData.fullName,
+           email: formData.email,
+           password: formData.password,
+           confirmPassword: formData.confirmPassword,
+          }}
+    onChange={handleCreateAccountChange}
+  />
         );
 
       case 2:
@@ -89,12 +163,12 @@ export default function SignupFlow(){
     }
   }
 
-   if (isCompleted) {
+  if (isCompleted) {
     return <OnboardingSuccess />;
-   }
+  }
 
-   return (
-       <main className="premium-gradient flex min-h-screen items-center px-4 py-6 text-foreground sm:px-6 lg:px-8">
+  return (
+    <main className="premium-gradient flex min-h-screen items-center px-4 py-6 text-foreground sm:px-6 lg:px-8">
       <div className="mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
         <aside className="hidden lg:block">
           <Link href={ROUTES.home} className="inline-flex items-center gap-2">
@@ -215,7 +289,7 @@ export default function SignupFlow(){
                 </button>
               )}
 
-              <Button type="button" onClick={goNext} className="rounded-full">
+              <Button type="button" onClick={goNext} disabled={!stepValidity[currentStep]} className="rounded-full">
                 {currentStep === TOTAL_STEPS ? "Complete setup" : "Continue"}
                 <ArrowRight className="ml-2 size-4" />
               </Button>
@@ -224,8 +298,8 @@ export default function SignupFlow(){
         </section>
       </div>
     </main>
-   );
-} 
+  );
+}
 
 function OnboardingSuccess() {
   return (
@@ -234,7 +308,7 @@ function OnboardingSuccess() {
         initial={{ opacity: 0, scale: 0.94, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="w-full max-w-xl rounded-[2rem] border bg-card/90 p-8 text-center shadow-2xl shadow-black/5 backdrop-blur-xl"
+        className="w-full max-w-xl rounded-4xl border bg-card/90 p-8 text-center shadow-2xl shadow-black/5 backdrop-blur-xl"
       >
         <div className="mx-auto flex size-16 items-center justify-center rounded-3xl bg-primary text-primary-foreground">
           <CheckCircle2 className="size-8" />
@@ -245,8 +319,8 @@ function OnboardingSuccess() {
         </h1>
 
         <p className="mt-4 leading-7 text-muted-foreground">
-          Your profile has been created. You&apos;re ready to explore your fitness
-          dashboard.
+          Your profile has been created. You&apos;re ready to explore your
+          fitness dashboard.
         </p>
 
         <Button asChild className="mt-8 rounded-full">
