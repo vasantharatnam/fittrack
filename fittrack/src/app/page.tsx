@@ -3,12 +3,16 @@ import Link from "next/link"
 import { ArrowRight, PlayCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/lib/constants";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 
 
 export default function Home() {
   return (
       <main className="min-h-screen overflow-hidden bg-background text-foreground">
+       <div className="fixed right-5 top-5 z-50">
+       <ThemeToggle />
+      </div>
       <section className="premium-gradient relative flex min-h-screen items-center">
         <div className="fit-container relative z-10 grid items-center gap-12 py-24 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="text-center lg:text-left">
