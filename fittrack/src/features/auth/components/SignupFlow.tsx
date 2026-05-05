@@ -12,6 +12,7 @@ import CreateAccountStep from "../steps/CreateAccountStep";
 import { FitnessGoalsStep } from "../steps/FitnessGoalsStep";
 import { PersonalDetailsStep } from "../steps/PersonalDetailsStep";
 import ProfileSetupStep from "../steps/ProfileSetupStep";
+import type { PersonalDetailsFormValues } from "@/features/auth/schemas";
 
 import { defaultSignupFormData } from "../type";
 import type { SignupStep } from "../type";
@@ -36,7 +37,7 @@ export default function SignupFlow() {
   const [stepValidity, setStepValidity] = useState<Record<SignupStep, boolean>>(
     {
       1: false,
-      2: true,
+      2: false,
       3: true,
       4: true,
       5: true,
@@ -53,45 +54,78 @@ export default function SignupFlow() {
   );
 
   const handleCreateAccountChange = useCallback(
-  (
-    values: {
-      fullName: string;
-      email: string;
-      password: string;
-      confirmPassword: string;
+    (
+      values: {
+        fullName: string;
+        email: string;
+        password: string;
+        confirmPassword: string;
+      },
+      isValid: boolean,
+    ) => {
+      setFormData((previousData) => {
+        const isSame =
+          previousData.fullName === values.fullName &&
+          previousData.email === values.email &&
+          previousData.password === values.password &&
+          previousData.confirmPassword === values.confirmPassword;
+
+        if (isSame) {
+          return previousData;
+        }
+
+        return {
+          ...previousData,
+          ...values,
+        };
+      });
+
+      setStepValidity((previousValidity) => {
+        if (previousValidity[1] === isValid) {
+          return previousValidity;
+        }
+
+        return {
+          ...previousValidity,
+          1: isValid,
+        };
+      });
     },
-    isValid: boolean
-  ) => {
-    setFormData((previousData) => {
-      const isSame =
-        previousData.fullName === values.fullName &&
-        previousData.email === values.email &&
-        previousData.password === values.password &&
-        previousData.confirmPassword === values.confirmPassword;
+    [],
+  );
+  const handlePersonalDetailsChange = useCallback(
+    (values: PersonalDetailsFormValues, isValid: boolean) => {
+      setFormData((previousData) => {
+        const isSame =
+          previousData.dateOfBirth === values.dateOfBirth &&
+          previousData.gender === values.gender &&
+          previousData.height === values.height &&
+          previousData.weight === values.weight &&
+          previousData.unitSystem === values.unitSystem;
 
-      if (isSame) {
-        return previousData;
-      }
+        if (isSame) {
+          return previousData;
+        }
 
-      return {
-        ...previousData,
-        ...values,
-      };
-    });
+        return {
+          ...previousData,
+          ...values,
+        };
+      });
 
-    setStepValidity((previousValidity) => {
-      if (previousValidity[1] === isValid) {
-        return previousValidity;
-      }
+      setStepValidity((previousValidity) => {
+        if (previousValidity[2] === isValid) {
+          return previousValidity;
+        }
 
-      return {
-        ...previousValidity,
-        1: isValid,
-      };
-    });
-  },
-  []
-);
+        return {
+          ...previousValidity,
+          2: isValid,
+        };
+      });
+    },
+    [],
+  );
 
   function goBack() {
     if (!canGoBack) {
@@ -135,19 +169,30 @@ export default function SignupFlow() {
     switch (currentStep) {
       case 1:
         return (
-         <CreateAccountStep
-          values={{
-           fullName: formData.fullName,
-           email: formData.email,
-           password: formData.password,
-           confirmPassword: formData.confirmPassword,
-          }}
-    onChange={handleCreateAccountChange}
-  />
+          <CreateAccountStep
+            values={{
+              fullName: formData.fullName,
+              email: formData.email,
+              password: formData.password,
+              confirmPassword: formData.confirmPassword,
+            }}
+            onChange={handleCreateAccountChange}
+          />
         );
 
       case 2:
-        return <PersonalDetailsStep />;
+        return (
+          <PersonalDetailsStep
+            values={{
+              dateOfBirth: formData.dateOfBirth,
+              gender: formData.gender as PersonalDetailsFormValues["gender"],
+              height: formData.height,
+              weight: formData.weight,
+              unitSystem: formData.unitSystem,
+            }}
+            onChange={handlePersonalDetailsChange}
+          />
+        );
 
       case 3:
         return <FitnessGoalsStep />;
@@ -289,7 +334,12 @@ export default function SignupFlow() {
                 </button>
               )}
 
-              <Button type="button" onClick={goNext} disabled={!stepValidity[currentStep]} className="rounded-full">
+              <Button
+                type="button"
+                onClick={goNext}
+                disabled={!stepValidity[currentStep]}
+                className="rounded-full"
+              >
                 {currentStep === TOTAL_STEPS ? "Complete setup" : "Continue"}
                 <ArrowRight className="ml-2 size-4" />
               </Button>

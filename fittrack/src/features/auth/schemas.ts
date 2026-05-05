@@ -27,3 +27,26 @@ export const createAccountSchema = z
   });
 
 export type CreateAccountFormValues = z.infer<typeof createAccountSchema>;
+
+
+export const personalDetailsSchema = z.object({
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+
+  gender: z.enum(["male", "female", "other", "prefer-not-to-say"], {
+    message: "Please select your gender",
+  }),
+
+  height: z
+    .number()
+    .min(90, "Height must be at least 90")
+    .max(250, "Height must be less than 250"),
+
+  weight: z
+    .number()
+    .min(25, "Weight must be at least 25")
+    .max(250, "Weight must be less than 250"),
+
+  unitSystem: z.enum(["metric", "imperial"]),
+});
+
+export type PersonalDetailsFormValues = z.infer<typeof personalDetailsSchema>;
