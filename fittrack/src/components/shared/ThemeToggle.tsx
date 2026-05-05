@@ -6,28 +6,25 @@ import { Button } from "@/components/ui/button";
 import { LOCAL_STORAGE_KEYS } from "@/lib/constants";
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") {
+      return "light";
+    }
+
+    return localStorage.getItem(LOCAL_STORAGE_KEYS.theme) === "dark"
+      ? "dark"
+      : "light";
+  });
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem(LOCAL_STORAGE_KEYS.theme);
-
-    if (savedTheme === "dark") {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    }
-  }, []);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem(LOCAL_STORAGE_KEYS.theme, theme);
+  }, [theme]);
 
   function toggleTheme() {
     const nextTheme = theme === "light" ? "dark" : "light";
 
     setTheme(nextTheme);
-    localStorage.setItem(LOCAL_STORAGE_KEYS.theme, nextTheme);
-
-    if (nextTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
   }
 
   return (
