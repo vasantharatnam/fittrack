@@ -51,7 +51,7 @@ export function DashboardHeader({
           </p>
         </div>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex min-w-0 items-center gap-2">
           <Button
             type="button"
             variant="outline"
@@ -74,7 +74,7 @@ export function DashboardHeader({
             <Bell className="size-4" />
           </Button>
 
-          <div className="flex items-center gap-3 rounded-full border bg-card py-1 pl-1 pr-3">
+          <div className="flex min-w-0 items-center gap-3 rounded-full border bg-card py-1 pl-1 pr-2 sm:pr-3">
             <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-sm font-black text-primary">
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element

@@ -22,19 +22,21 @@ const fallbackProfile: DashboardProfile = {
 };
 
 export function useDashboardProfile() {
-  const [profile, setProfile] = useState<DashboardProfile>(fallbackProfile);
+  const [profile] = useState<DashboardProfile>(() => {
+    const savedProfile = getSavedSignupProfile();
+
+    if (!savedProfile) {
+      return fallbackProfile;
+    }
+
+    return {
+      ...fallbackProfile,
+      ...savedProfile,
+    };
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const savedProfile = getSavedSignupProfile();
-
-    if (savedProfile) {
-      setProfile({
-        ...fallbackProfile,
-        ...savedProfile,
-      });
-    }
-
     const timeoutId = window.setTimeout(() => {
       setIsLoading(false);
     }, 450);

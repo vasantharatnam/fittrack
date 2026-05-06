@@ -22,12 +22,12 @@ import { ROUTES } from "@/lib/constants";
 
 export  default function HeroSection() {
   return (
-    <section className="premium-gradient relative flex min-h-screen items-center overflow-hidden pt-20">
+    <section className="premium-gradient relative flex min-h-screen items-center overflow-hidden pt-24 sm:pt-20">
       <GradientBlob className="-left-24 top-24 size-80" />
       <GradientBlob className="-right-28 top-10 size-96 bg-accent/30" />
       <GradientBlob className="bottom-10 left-1/2 size-72 -translate-x-1/2 bg-primary/10" />
 
-      <div className="fit-container relative z-10 grid items-center gap-14 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
+      <div className="fit-container relative z-10 grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -39,11 +39,11 @@ export  default function HeroSection() {
             Fitness, nutrition, and wellness in one beautiful place
           </div>
 
-          <h1 className="text-balance text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="text-balance text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl">
             Build healthy habits with a fitness companion that feels personal.
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground lg:mx-0">
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8 lg:mx-0">
             FitTrack helps you track workouts, plan nutrition, measure progress,
             and stay consistent with a premium wellness experience designed for
             everyday life.
@@ -102,14 +102,14 @@ function HeroMockup() {
       initial={{ opacity: 0, scale: 0.92, y: 32 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.75, ease: "easeOut", delay: 0.1 }}
-      className="relative mx-auto w-full max-w-md"
+      className="relative mx-auto w-full max-w-sm sm:max-w-md"
     >
       <motion.div
         animate={{ y: [0, -12, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="glass-card relative rounded-[2.25rem] p-4 sm:p-5"
+        className="glass-card relative rounded-[1.75rem] p-3 sm:rounded-[2.25rem] sm:p-5"
       >
-        <div className="rounded-[1.75rem] bg-card p-5 shadow-sm">
+        <div className="rounded-[1.5rem] bg-card p-4 shadow-sm sm:rounded-[1.75rem] sm:p-5">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">

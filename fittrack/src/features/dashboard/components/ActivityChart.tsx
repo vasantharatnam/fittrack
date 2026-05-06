@@ -33,7 +33,7 @@ export function ActivityChart() {
         </div>
       </div>
 
-      <div className="h-72 w-full">
+      <div className="h-64 w-full sm:h-72">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={weeklyActivityData}>
             <CartesianGrid
@@ -70,8 +70,8 @@ export function ActivityChart() {
             <Bar
               dataKey="minutes"
               radius={[12, 12, 0, 0]}
-              fill="hsl(var(--primary))"
-              barSize={34}
+              fill="var(--primary)"
+              barSize={28}
             />
           </BarChart>
         </ResponsiveContainer>

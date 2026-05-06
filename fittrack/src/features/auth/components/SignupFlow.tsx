@@ -348,7 +348,7 @@ export default function SignupFlow() {
   }
 
   return (
-    <main className="premium-gradient flex min-h-screen items-center px-4 py-6 text-foreground sm:px-6 lg:px-8">
+    <main className="premium-gradient flex min-h-screen items-start px-3 py-4 text-foreground sm:items-center sm:px-6 sm:py-6 lg:px-8">
       <div className="mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
         <aside className="hidden lg:block">
           <Link href={ROUTES.home} className="inline-flex items-center gap-2">
@@ -411,7 +411,7 @@ export default function SignupFlow() {
           </div>
         </aside>
 
-        <section className="rounded-[2rem] border bg-card/90 p-5 shadow-2xl shadow-black/5 backdrop-blur-xl sm:p-8">
+        <section className="w-full rounded-[1.5rem] border bg-card/90 p-4 shadow-2xl shadow-black/5 backdrop-blur-xl sm:rounded-[2rem] sm:p-8">
           <div className="mb-8">
             <div className="mb-5 flex items-center justify-between gap-4">
               <Link
@@ -432,7 +432,7 @@ export default function SignupFlow() {
             <StepIndicator currentStep={currentStep} totalSteps={TOTAL_STEPS} />
           </div>
 
-          <div className="min-h-[360px]">
+          <div className="min-h-[360px] sm:min-h-[420px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -446,13 +446,13 @@ export default function SignupFlow() {
             </AnimatePresence>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t pt-5 sm:flex-row sm:items-center sm:justify-between sm:pt-6">
             <Button
               type="button"
               variant="outline"
               onClick={goBack}
               disabled={!canGoBack}
-              className="rounded-full"
+              className="w-full rounded-full sm:w-auto"
             >
               <ArrowLeft className="mr-2 size-4" />
               Back
@@ -473,7 +473,7 @@ export default function SignupFlow() {
                 type="button"
                 onClick={goNext}
                 disabled={!stepValidity[currentStep] || isSubmitting}
-                className="rounded-full"
+                className="w-full rounded-full sm:w-auto"
               >
                 {isSubmitting
                   ? "Saving..."

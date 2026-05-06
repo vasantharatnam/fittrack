@@ -20,7 +20,7 @@ export default function FinalCTASection(){
                whileInView={{ opacity : 1 , y:0 }}
                viewport={{once: true , margin: "-80px"}}
                transition={{ duration: 0.55 , ease: "easeOut"}}
-               className="relative overflow-hidden rounded-4xl border bg-primary px-6 py-14 text-center text-primary-foreground shadow-2xl shadow-primary/20 sm:px-10 lg:px-20"
+               className="relative overflow-hidden rounded-[1.75rem] border bg-primary px-5 py-10 text-center text-primary-foreground shadow-2xl shadow-primary/20 sm:rounded-[2rem] sm:px-10 sm:py-14 lg:px-20"
               >
                <div className="absolute inset-0 opacity-20">
                    <div className="absolute left-10 top-10 size-32 rounded-full bg-white blur-3xl" />
@@ -41,7 +41,7 @@ export default function FinalCTASection(){
                     that keeps your progress visible every day
                   </p>
 
-                  <div className="mx-auto mt-8 flex max-w-xl flex-col gap-3 rounded-full bg-white/10 p-2 backdrop-blur sm:flex-row">
+                  <div className="mx-auto mt-8 flex max-w-xl flex-col gap-3 rounded-[1.5rem] bg-white/10 p-2 backdrop-blur sm:flex-row sm:rounded-full">
                    <div className="flex flex-1 items-center gap-3 rounded-full bg-background px-4 text-foreground">
                     <Mail className="size-4 text-muted-foreground" />
                       <input

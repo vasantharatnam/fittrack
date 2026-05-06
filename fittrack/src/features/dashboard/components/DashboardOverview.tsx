@@ -14,12 +14,12 @@ export function DashboardOverview() {
     <div className="grid gap-5">
       <DashboardStats />
 
-      <section className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+      <section className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
         <ActivityChart />
         <WorkoutCard />
       </section>
 
-      <section className="grid gap-5 lg:grid-cols-2">
+      <section className="grid min-w-0 gap-5 lg:grid-cols-2">
         <QuickActions />
 
         <GoalSummaryCard
