@@ -11,10 +11,12 @@ import { ActivityLevelStep } from "../steps/ActivityLevelStep";
 import CreateAccountStep from "../steps/CreateAccountStep";
 import { FitnessGoalsStep } from "../steps/FitnessGoalsStep";
 import { PersonalDetailsStep } from "../steps/PersonalDetailsStep";
-import ProfileSetupStep from "../steps/ProfileSetupStep";
+import { ProfileSetupStep } from "../steps/ProfileSetupStep";
 import type {
+  ActivityLevelFormValues,
   PersonalDetailsFormValues,
   FitnessGoalsFormValues,
+  ProfileSetupFormValues,
 } from "@/features/auth/schemas";
 
 import { defaultSignupFormData } from "../type";
@@ -160,6 +162,74 @@ export default function SignupFlow() {
     [],
   );
 
+  const handleActivityLevelChange = useCallback(
+    (values: ActivityLevelFormValues, isValid: boolean) => {
+      setFormData((previousData) => {
+        if (previousData.activityLevel === values.activityLevel) {
+          return previousData;
+        }
+
+        return {
+          ...previousData,
+          activityLevel: values.activityLevel,
+        };
+      });
+
+      setStepValidity((previousValidity) => {
+        if (previousValidity[4] === isValid) {
+          return previousValidity;
+        }
+
+        return {
+          ...previousValidity,
+          4: isValid,
+        };
+      });
+    },
+    [],
+  );
+
+  const handleProfileSetupChange = useCallback(
+    (values: ProfileSetupFormValues, isValid: boolean) => {
+      setFormData((previousData) => {
+        const isSame =
+          previousData.avatarUrl === values.avatarUrl &&
+          previousData.username === values.username &&
+          previousData.bio === values.bio &&
+          previousData.notifications.workoutReminders ===
+            values.notifications.workoutReminders &&
+          previousData.notifications.weeklyReports ===
+            values.notifications.weeklyReports &&
+          previousData.notifications.communityUpdates ===
+            values.notifications.communityUpdates;
+
+        if (isSame) {
+          return previousData;
+        }
+
+        return {
+          ...previousData,
+          avatarUrl: values.avatarUrl ?? "",
+          username: values.username,
+          bio: values.bio ?? "",
+          notifications: values.notifications,
+        };
+      });
+
+      setStepValidity((previousValidity) => {
+        if (previousValidity[5] === isValid) {
+          return previousValidity;
+        }
+
+        return {
+          ...previousValidity,
+          5: isValid,
+        };
+      });
+    },
+    [],
+  );
+
   function goBack() {
     if (!canGoBack) {
       return;
@@ -238,10 +308,35 @@ export default function SignupFlow() {
         );
 
       case 4:
-        return <ActivityLevelStep />;
+        return (
+          <ActivityLevelStep
+            values={{
+              activityLevel:
+                formData.activityLevel === ""
+                  ? "sedentary"
+                  : formData.activityLevel,
+            }}
+            onChange={handleActivityLevelChange}
+          />
+        );
 
       case 5:
-        return <ProfileSetupStep />;
+        return (
+          <ProfileSetupStep
+            values={{
+              avatarUrl: formData.avatarUrl,
+              username:
+                formData.username ||
+                formData.fullName
+                  .toLowerCase()
+                  .replace(/\s+/g, "_")
+                  .slice(0, 20),
+              bio: formData.bio,
+              notifications: formData.notifications,
+            }}
+            onChange={handleProfileSetupChange}
+          />
+        );
 
       default:
         return null;

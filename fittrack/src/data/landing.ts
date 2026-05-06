@@ -183,3 +183,61 @@ export const goalOptions = [
     icon: Brain,
   },
 ];
+
+import {
+  Briefcase,
+  PersonStanding,
+  Medal,
+  Zap,
+} from "lucide-react";
+
+export const activityLevelOptions = [
+  {
+    id: "sedentary",
+    title: "Sedentary",
+    description: "Mostly sitting during the day, with little planned activity.",
+    icon: Briefcase,
+  },
+  {
+    id: "light",
+    title: "Lightly Active",
+    description: "Light movement or workouts around 1-2 times per week.",
+    icon: PersonStanding,
+  },
+  {
+    id: "moderate",
+    title: "Moderately Active",
+    description: "Regular workouts or sports around 3-4 times per week.",
+    icon: Activity,
+  },
+  {
+    id: "very-active",
+    title: "Very Active",
+    description: "Hard training, sports, or physical activity 5+ times weekly.",
+    icon: Zap,
+  },
+  {
+    id: "athlete",
+    title: "Athlete",
+    description: "Structured training with high performance or competition goals.",
+    icon: Medal,
+  },
+] as const;
+
+export const notificationOptions = [
+  {
+    id: "workoutReminders",
+    title: "Workout reminders",
+    description: "Get gentle reminders to stay consistent with your routine.",
+  },
+  {
+    id: "weeklyReports",
+    title: "Weekly reports",
+    description: "Receive weekly summaries of your workouts and progress.",
+  },
+  {
+    id: "communityUpdates",
+    title: "Community updates",
+    description: "Stay updated about challenges, milestones, and wellness tips.",
+  },
+] as const;

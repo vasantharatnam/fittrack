@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar, Ruler, Scale } from "lucide-react";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import {
   personalDetailsSchema,
@@ -30,7 +30,6 @@ export function PersonalDetailsStep({
   const {
     register,
     control,
-    watch,
     formState: { errors, isValid },
   } = useForm<PersonalDetailsFormValues>({
     resolver: zodResolver(personalDetailsSchema),
@@ -38,11 +37,11 @@ export function PersonalDetailsStep({
     defaultValues: values,
   });
 
-  const dateOfBirth = watch("dateOfBirth");
-  const gender = watch("gender");
-  const height = watch("height");
-  const weight = watch("weight");
-  const unitSystem = watch("unitSystem");
+  const dateOfBirth = useWatch({ control, name: "dateOfBirth" }) ?? "";
+  const gender = useWatch({ control, name: "gender" });
+  const height = useWatch({ control, name: "height" }) ?? 0;
+  const weight = useWatch({ control, name: "weight" }) ?? 0;
+  const unitSystem = useWatch({ control, name: "unitSystem" }) ?? "metric";
 
   useEffect(() => {
     onChange(

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { FaChrome } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -35,7 +35,7 @@ export default function CreateAccountStep({
 
   const {
     register,
-    watch,
+    control,
     formState: { errors, isValid },
   } = useForm<CreateAccountFormValues>({
     resolver: zodResolver(createAccountSchema),
@@ -43,10 +43,10 @@ export default function CreateAccountStep({
     defaultValues: values,
   });
 
-  const fullName = watch("fullName");
-  const email = watch("email");
-  const password = watch("password");
-  const confirmPassword = watch("confirmPassword");
+  const fullName = useWatch({ control, name: "fullName" }) ?? "";
+  const email = useWatch({ control, name: "email" }) ?? "";
+  const password = useWatch({ control, name: "password" }) ?? "";
+  const confirmPassword = useWatch({ control, name: "confirmPassword" }) ?? "";
 
   const passwordStrength = getPasswordStrength(password || "");
 

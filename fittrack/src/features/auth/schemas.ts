@@ -60,3 +60,37 @@ export const fitnessGoalsSchema = z.object({
 });
 
 export type FitnessGoalsFormValues = z.infer<typeof fitnessGoalsSchema>;
+
+
+export const activityLevelSchema = z.object({
+  activityLevel: z.enum([
+    "sedentary",
+    "light",
+    "moderate",
+    "very-active",
+    "athlete",
+  ]),
+});
+
+export type ActivityLevelFormValues = z.infer<typeof activityLevelSchema>;
+
+export const profileSetupSchema = z.object({
+  avatarUrl: z.string().optional(),
+  username: z
+    .string()
+    .trim()
+    .min(3, "Username must be at least 3 characters")
+    .max(24, "Username must be less than 24 characters")
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores"
+    ),
+  bio: z.string().max(160, "Bio must be less than 160 characters").optional(),
+  notifications: z.object({
+    workoutReminders: z.boolean(),
+    weeklyReports: z.boolean(),
+    communityUpdates: z.boolean(),
+  }),
+});
+
+export type ProfileSetupFormValues = z.infer<typeof profileSetupSchema>;
