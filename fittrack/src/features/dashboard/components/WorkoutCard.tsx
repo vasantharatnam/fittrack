@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Circle, Dumbbell } from "lucide-react";
+import { CheckCircle2, Circle, Dumbbell, ListChecks } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "../../../components/shared/EmptyState";
 import { todaysWorkout } from "@/data/dashboard";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +14,8 @@ export function WorkoutCard() {
 
   const completedCount = completedIds.length;
   const totalCount = todaysWorkout.length;
-  const progress = Math.round((completedCount / totalCount) * 100);
+  const progress =
+    totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   function toggleExercise(id: string) {
     setCompletedIds((previousIds) =>
@@ -62,48 +64,57 @@ export function WorkoutCard() {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-3">
-        {todaysWorkout.map((exercise) => {
-          const completed = completedIds.includes(exercise.id);
+      {todaysWorkout.length === 0 ? (
+        <div className="mt-6">
+          <EmptyState
+            icon={ListChecks}
+            title="No workout planned"
+            description="You do not have a workout scheduled for today. Start a custom workout or check back later."
+            actionLabel="Create workout"
+          />
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-3">
+          {todaysWorkout.map((exercise) => {
+            const completed = completedIds.includes(exercise.id);
 
-          return (
-            <button
-              key={exercise.id}
-              type="button"
-              onClick={() => toggleExercise(exercise.id)}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl border bg-background/70 p-4 text-left transition-all duration-200 hover:border-primary/40",
-                completed && "border-primary/40 bg-primary/5"
-              )}
-            >
-              {completed ? (
-                <CheckCircle2 className="size-6 shrink-0 text-primary" />
-              ) : (
-                <Circle className="size-6 shrink-0 text-muted-foreground" />
-              )}
+            return (
+              <button
+                key={exercise.id}
+                type="button"
+                onClick={() => toggleExercise(exercise.id)}
+                className={cn(
+                  "flex items-center gap-3 rounded-2xl border bg-background/70 p-4 text-left transition-all duration-200 hover:border-primary/40",
+                  completed && "border-primary/40 bg-primary/5"
+                )}
+              >
+                {completed ? (
+                  <CheckCircle2 className="size-6 shrink-0 text-primary" />
+                ) : (
+                  <Circle className="size-6 shrink-0 text-muted-foreground" />
+                )}
 
-              <div className="min-w-0 flex-1">
-                <p
-                  className={cn(
-                    "font-bold",
-                    completed && "text-muted-foreground line-through"
-                  )}
-                >
-                  {exercise.title}
-                </p>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={cn(
+                      "font-bold",
+                      completed && "text-muted-foreground line-through"
+                    )}
+                  >
+                    {exercise.title}
+                  </p>
 
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {exercise.meta}
-                </p>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {exercise.meta}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
-      <Button className="mt-6 w-full rounded-full">
-        Start Workout
-      </Button>
+      <Button className="mt-6 w-full rounded-full">Start Workout</Button>
     </div>
   );
 }
