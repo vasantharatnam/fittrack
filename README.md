@@ -9,7 +9,7 @@ The project includes a polished landing page, a 5-step authentication/onboarding
 Add deployed link here after deployment:
 
 ```txt
-https://your-vercel-link.vercel.app
+https://fit-trac.netlify.app/
 ```
 
 ## Screenshots
