@@ -524,8 +524,9 @@ function OnboardingSuccess({ fullName }: { fullName: string }) {
         </h1>
 
         <p className="mx-auto mt-4 max-w-md leading-7 text-muted-foreground">
-          Your profile has been created. Your dashboard is ready with your goals,
-          activity preferences, and wellness overview.
+          Your profile has been created and saved locally for this demo. Your
+          dashboard is ready with your goals, activity preferences, and wellness
+          overview.
         </p>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-2">

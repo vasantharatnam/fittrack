@@ -52,7 +52,7 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer className="border-t bg-card/40">
-      <div className="fit-container py-12">
+      <div className="fit-container py-10 sm:py-12">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1.8fr]">
           <div>
             <Link
@@ -112,7 +112,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t pt-6 text-sm text-muted-foreground sm:mt-12 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} FitTrack. All rights reserved.</p>
 
           <div className="flex flex-wrap gap-4">

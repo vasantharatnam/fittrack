@@ -8,7 +8,12 @@ import { pricingPlans } from "@/data/landing"
 
 export default function PricingSection(){
     return (
-        <section id="pricing" className="section-padding bg-card/40">
+        <section id="pricing" className="section-padding relative overflow-hidden bg-card/40">
+           <div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent"
+           />
+
            <div className="fit-container">
             <SectionHeader
              eyebrow="Pricing"

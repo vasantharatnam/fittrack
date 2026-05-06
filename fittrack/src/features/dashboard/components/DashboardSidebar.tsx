@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 export function DashboardSidebar() {
   return (
-    <aside className="fixed left-0 top-0 hidden h-screen w-72 border-r bg-card/80 p-5 backdrop-blur-xl lg:block">
+    <aside className="fixed left-0 top-0 z-20 hidden h-screen w-72 border-r bg-card/80 p-5 backdrop-blur-xl lg:block">
       <Link href={ROUTES.home} className="inline-flex items-center gap-2">
         <span className="flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
           <Activity className="size-5" />

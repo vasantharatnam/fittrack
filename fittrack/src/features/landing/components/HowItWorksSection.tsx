@@ -8,7 +8,12 @@ import { howItWorks } from "@/data/landing";
 
 export function HowItWorksSection(){
     return (
-        <section id="how-it-works" className="section-padding bg-card/40">
+        <section id="how-it-works" className="section-padding relative overflow-hidden bg-card/40">
+           <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-0 h-px w-[80%] -translate-x-1/2 bg-gradient-to-r from-transparent via-border to-transparent"
+           />
+
            <div className="fit-container">
                <SectionHeader 
                  eyebrow="How it Works"

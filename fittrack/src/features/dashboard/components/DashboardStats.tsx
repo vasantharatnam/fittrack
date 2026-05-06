@@ -19,7 +19,7 @@ export function DashboardStats() {
               delay: index * 0.07,
               ease: "easeOut",
             }}
-            className="rounded-3xl border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            className="card-hover rounded-3xl border bg-card p-5 shadow-sm"
           >
             <div className="flex items-start justify-between gap-4">
               <div>

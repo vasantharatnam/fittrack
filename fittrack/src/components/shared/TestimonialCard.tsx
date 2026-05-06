@@ -14,7 +14,7 @@ export function TestimonialCard({
   rating,
 }: TestimonialCardProps) {
   return (
-    <div className="rounded-3xl border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <div className="card-hover rounded-3xl border bg-card p-6 shadow-sm">
       <div className="flex gap-1 text-yellow-500">
         {Array.from({ length: rating }).map((_, index) => (
           <Star key={index} className="size-4 fill-current" />

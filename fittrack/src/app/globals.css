@@ -199,6 +199,25 @@
     @apply border border-white/20 bg-white/70 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5 dark:shadow-[0_24px_80px_rgba(0,0,0,0.28)];
   }
 
+  .soft-grid-bg {
+    background-image:
+      linear-gradient(to right, color-mix(in oklch, var(--border) 45%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklch, var(--border) 45%, transparent) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .subtle-scale {
+    @apply transition-transform duration-200 active:scale-[0.98];
+  }
+
   .premium-gradient {
     background:
       radial-gradient(circle at 20% 20%, color-mix(in oklch, var(--primary) 35%, transparent), transparent 32%),

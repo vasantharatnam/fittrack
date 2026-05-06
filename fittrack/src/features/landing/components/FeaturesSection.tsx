@@ -7,8 +7,13 @@ import { features } from "@/data/landing";
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="section-padding bg-background">
-      <div className="fit-container">
+    <section id="features" className="section-padding relative overflow-hidden bg-background">
+      <div
+        aria-hidden="true"
+        className="soft-grid-bg absolute inset-0 opacity-[0.22]"
+      />
+
+      <div className="fit-container relative z-10">
         <SectionHeader
           eyebrow="Features"
           title="Everything you need to stay consistent, without the clutter."

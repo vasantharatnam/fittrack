@@ -14,7 +14,7 @@ export default function PricingCard({ name , price , description, feature , high
     return (
         <div
          className={cn(
-        "relative rounded-3xl border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl",
+        "card-hover relative rounded-3xl border bg-card p-6 shadow-sm",
         highlighted && "border-primary bg-primary text-primary-foreground shadow-xl"
       )}
         >

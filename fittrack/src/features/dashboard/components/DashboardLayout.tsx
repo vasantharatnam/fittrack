@@ -15,10 +15,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { profile, isLoading } = useDashboardProfile();
 
   return (
-    <main className="min-h-screen bg-background pb-24 text-foreground lg:pb-0 lg:pl-72">
+    <main className="relative min-h-screen overflow-hidden bg-background pb-24 text-foreground lg:pb-0 lg:pl-72">
+      <div
+        aria-hidden="true"
+        className="soft-grid-bg pointer-events-none fixed inset-0 opacity-[0.18]"
+      />
+
       <DashboardSidebar />
 
-      <div className="lg:p-8">
+      <div className="relative z-10 lg:p-8">
         <DashboardHeader
           fullName={profile.fullName}
           username={profile.username}

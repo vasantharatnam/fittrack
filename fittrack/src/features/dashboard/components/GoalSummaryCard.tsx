@@ -32,7 +32,7 @@ export function GoalSummaryCard({
   const hasGoals = goals.length > 0;
   const visibleGoals = goals;
   return (
-    <div className="rounded-3xl border bg-card p-6 shadow-sm">
+    <div className="rounded-3xl border bg-card p-5 shadow-sm sm:p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-primary">
