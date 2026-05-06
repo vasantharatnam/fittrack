@@ -12,7 +12,10 @@ import CreateAccountStep from "../steps/CreateAccountStep";
 import { FitnessGoalsStep } from "../steps/FitnessGoalsStep";
 import { PersonalDetailsStep } from "../steps/PersonalDetailsStep";
 import ProfileSetupStep from "../steps/ProfileSetupStep";
-import type { PersonalDetailsFormValues } from "@/features/auth/schemas";
+import type {
+  PersonalDetailsFormValues,
+  FitnessGoalsFormValues,
+} from "@/features/auth/schemas";
 
 import { defaultSignupFormData } from "../type";
 import type { SignupStep } from "../type";
@@ -38,7 +41,7 @@ export default function SignupFlow() {
     {
       1: false,
       2: false,
-      3: true,
+      3: false,
       4: true,
       5: true,
     },
@@ -127,6 +130,36 @@ export default function SignupFlow() {
     [],
   );
 
+  const handleFitnessGoalsChange = useCallback(
+    (values: FitnessGoalsFormValues, isValid: boolean) => {
+      setFormData((previousData) => {
+        const previousGoals = previousData.goals.join(",");
+        const nextGoals = values.goals.join(",");
+
+        if (previousGoals === nextGoals) {
+          return previousData;
+        }
+
+        return {
+          ...previousData,
+          goals: values.goals,
+        };
+      });
+
+      setStepValidity((previousValidity) => {
+        if (previousValidity[3] === isValid) {
+          return previousValidity;
+        }
+
+        return {
+          ...previousValidity,
+          3: isValid,
+        };
+      });
+    },
+    [],
+  );
+
   function goBack() {
     if (!canGoBack) {
       return;
@@ -195,7 +228,14 @@ export default function SignupFlow() {
         );
 
       case 3:
-        return <FitnessGoalsStep />;
+        return (
+          <FitnessGoalsStep
+            values={{
+              goals: formData.goals,
+            }}
+            onChange={handleFitnessGoalsChange}
+          />
+        );
 
       case 4:
         return <ActivityLevelStep />;

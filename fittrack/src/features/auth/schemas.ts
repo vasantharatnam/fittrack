@@ -50,3 +50,13 @@ export const personalDetailsSchema = z.object({
 });
 
 export type PersonalDetailsFormValues = z.infer<typeof personalDetailsSchema>;
+
+
+export const fitnessGoalsSchema = z.object({
+      goals: z
+    .array(z.string())
+    .min(1, "Select at least one fitness goal")
+    .max(3, "You can select up to 3 goals"),
+});
+
+export type FitnessGoalsFormValues = z.infer<typeof fitnessGoalsSchema>;
