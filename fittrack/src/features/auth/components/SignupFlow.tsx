@@ -12,6 +12,8 @@ import CreateAccountStep from "../steps/CreateAccountStep";
 import { FitnessGoalsStep } from "../steps/FitnessGoalsStep";
 import { PersonalDetailsStep } from "../steps/PersonalDetailsStep";
 import { ProfileSetupStep } from "../steps/ProfileSetupStep";
+import { submitSignupProfile } from "@/features/auth/api";
+import { saveSignupProfile } from "@/features/auth/storage";
 import type {
   ActivityLevelFormValues,
   PersonalDetailsFormValues,
@@ -50,6 +52,7 @@ export default function SignupFlow() {
   );
 
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const canGoBack = currentStep > 1;
 
@@ -238,24 +241,21 @@ export default function SignupFlow() {
   }
 
   async function goNext() {
-    if (!stepValidity[currentStep]) return;
+    if (!stepValidity[currentStep] || isSubmitting) return;
 
     if (currentStep === TOTAL_STEPS) {
-      localStorage.setItem("fittrack-profile", JSON.stringify(formData));
+      setIsSubmitting(true);
 
       try {
-        await fetch("/api/auth/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        saveSignupProfile(formData);
+        await submitSignupProfile(formData);
       } catch {
-        // LocalStorage is the fallback for this assignment.
+        saveSignupProfile(formData);
+      } finally {
+        setIsSubmitting(false);
+        setIsCompleted(true);
       }
 
-      setIsCompleted(true);
       return;
     }
 
@@ -344,7 +344,7 @@ export default function SignupFlow() {
   }
 
   if (isCompleted) {
-    return <OnboardingSuccess />;
+    return <OnboardingSuccess fullName={formData.fullName} />;
   }
 
   return (
@@ -472,10 +472,14 @@ export default function SignupFlow() {
               <Button
                 type="button"
                 onClick={goNext}
-                disabled={!stepValidity[currentStep]}
+                disabled={!stepValidity[currentStep] || isSubmitting}
                 className="rounded-full"
               >
-                {currentStep === TOTAL_STEPS ? "Complete setup" : "Continue"}
+                {isSubmitting
+                  ? "Saving..."
+                  : currentStep === TOTAL_STEPS
+                    ? "Complete setup"
+                    : "Continue"}
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </div>
@@ -486,35 +490,92 @@ export default function SignupFlow() {
   );
 }
 
-function OnboardingSuccess() {
+function OnboardingSuccess({ fullName }: { fullName: string }) {
   return (
-    <main className="premium-gradient flex min-h-screen items-center justify-center px-4 py-8 text-foreground">
+    <main className="premium-gradient relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-8 text-foreground">
+      <SuccessConfetti />
+
       <motion.div
         initial={{ opacity: 0, scale: 0.94, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="w-full max-w-xl rounded-4xl border bg-card/90 p-8 text-center shadow-2xl shadow-black/5 backdrop-blur-xl"
+        className="relative z-10 w-full max-w-xl rounded-[2rem] border bg-card/90 p-8 text-center shadow-2xl shadow-black/5 backdrop-blur-xl"
       >
-        <div className="mx-auto flex size-16 items-center justify-center rounded-3xl bg-primary text-primary-foreground">
-          <CheckCircle2 className="size-8" />
-        </div>
+        <motion.div
+          initial={{ scale: 0.7, rotate: -12 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 220,
+            damping: 14,
+            delay: 0.15,
+          }}
+          className="mx-auto flex size-20 items-center justify-center rounded-[2rem] bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+        >
+          <CheckCircle2 className="size-10" />
+        </motion.div>
 
-        <h1 className="mt-6 text-4xl font-black tracking-tight">
-          Welcome to FitTrack!
-        </h1>
-
-        <p className="mt-4 leading-7 text-muted-foreground">
-          Your profile has been created. You&apos;re ready to explore your
-          fitness dashboard.
+        <p className="mt-6 text-sm font-bold uppercase tracking-[0.25em] text-primary">
+          Setup complete
         </p>
 
-        <Button asChild className="mt-8 rounded-full">
-          <Link href={ROUTES.dashboard}>
-            Go to Dashboard
-            <ArrowRight className="ml-2 size-4" />
-          </Link>
-        </Button>
+        <h1 className="mt-3 text-balance text-4xl font-black tracking-tight sm:text-5xl">
+          Welcome to FitTrack{fullName ? `, ${fullName.split(" ")[0]}` : ""}!
+        </h1>
+
+        <p className="mx-auto mt-4 max-w-md leading-7 text-muted-foreground">
+          Your profile has been created. Your dashboard is ready with your goals,
+          activity preferences, and wellness overview.
+        </p>
+
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          <Button asChild className="rounded-full">
+            <Link href={ROUTES.dashboard}>
+              Go to Dashboard
+              <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </Button>
+
+          <Button asChild variant="outline" className="rounded-full">
+            <Link href={ROUTES.home}>Back to Home</Link>
+          </Button>
+        </div>
       </motion.div>
     </main>
+  );
+}
+
+function SuccessConfetti() {
+  const particles = [
+    { left: "12%", top: "18%", delay: 0, size: "size-3" },
+    { left: "22%", top: "72%", delay: 0.15, size: "size-2" },
+    { left: "35%", top: "12%", delay: 0.25, size: "size-2.5" },
+    { left: "64%", top: "20%", delay: 0.1, size: "size-3" },
+    { left: "78%", top: "70%", delay: 0.2, size: "size-2" },
+    { left: "88%", top: "30%", delay: 0.3, size: "size-2.5" },
+  ];
+
+  return (
+    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+      {particles.map((particle, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, y: 20, scale: 0.6 }}
+          animate={{ opacity: [0, 1, 1, 0], y: [-10, -70], scale: [0.6, 1, 0.8] }}
+          transition={{
+            duration: 2.4,
+            delay: particle.delay,
+            repeat: Infinity,
+            repeatDelay: 1.2,
+            ease: "easeOut",
+          }}
+          className={`absolute ${particle.size} rounded-full bg-primary`}
+          style={{
+            left: particle.left,
+            top: particle.top,
+          }}
+        />
+      ))}
+    </div>
   );
 }
