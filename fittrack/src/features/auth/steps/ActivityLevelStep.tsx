@@ -48,6 +48,8 @@ export function ActivityLevelStep({
               key={option.id}
               type="button"
               onClick={() => selectActivityLevel(option.id)}
+              aria-pressed={selected}
+              aria-label={`Select ${option.title} activity level`}
               className={cn(
                 "group flex items-start gap-4 rounded-3xl border bg-background/70 p-4 text-left transition-all duration-300",
                 selected

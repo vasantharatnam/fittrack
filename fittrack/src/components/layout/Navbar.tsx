@@ -54,17 +54,20 @@ export default function Navbar(){
             <span className="text-xl font-black tracking-tight">FitTrack</span>
           </Link>
 
-          <div className="hidden items-center gap-8 lg:flex">
+          <nav
+            className="hidden items-center gap-8 lg:flex"
+            aria-label="Primary navigation"
+          >
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-full px-2 py-1 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
               >
                 {link.label}
               </a>
             ))}
-          </div>
+          </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
             <ThemeToggle />
@@ -98,7 +101,7 @@ export default function Navbar(){
         <div className="fixed inset-0 z-[60] lg:hidden">
           <button
             type="button"
-            aria-label="Close menu overlay"
+            aria-label="Close navigation menu"
             onClick={closeMobileMenu}
             className="absolute inset-0 bg-foreground/30 backdrop-blur-sm"
           />

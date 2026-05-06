@@ -15,7 +15,7 @@ export function DashboardSidebar() {
         <span className="text-2xl font-black tracking-tight">FitTrack</span>
       </Link>
 
-      <nav className="mt-10 grid gap-2">
+      <nav className="mt-10 grid gap-2" aria-label="Dashboard navigation">
         {dashboardNavItems.map((item, index) => {
           const Icon = item.icon;
           const active = index === 0;
@@ -24,6 +24,7 @@ export function DashboardSidebar() {
             <a
               key={item.label}
               href={item.href}
+              aria-current={active ? "page" : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold transition-all",
                 active

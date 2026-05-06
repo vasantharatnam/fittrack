@@ -103,6 +103,7 @@ export default function CreateAccountStep({
             {...register("fullName")}
             placeholder="Enter your full name"
             autoComplete="name"
+            aria-invalid={Boolean(errors.fullName)}
             className="h-12 rounded-2xl pl-10"
           />
         </FormField>
@@ -117,6 +118,7 @@ export default function CreateAccountStep({
             type="email"
             placeholder="you@example.com"
             autoComplete="email"
+            aria-invalid={Boolean(errors.email)}
             className="h-12 rounded-2xl pl-10"
           />
         </FormField>
@@ -132,6 +134,7 @@ export default function CreateAccountStep({
               type={showPassword ? "text" : "password"}
               placeholder="Create a strong password"
               autoComplete="new-password"
+              aria-invalid={Boolean(errors.password)}
               className="h-12 rounded-2xl pl-10 pr-12"
             />
 
@@ -184,6 +187,7 @@ export default function CreateAccountStep({
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm your password"
               autoComplete="new-password"
+              aria-invalid={Boolean(errors.confirmPassword)}
               className="h-12 rounded-2xl pl-10 pr-12"
             />
 

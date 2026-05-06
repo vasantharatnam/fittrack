@@ -83,6 +83,8 @@ export function WorkoutCard() {
                 key={exercise.id}
                 type="button"
                 onClick={() => toggleExercise(exercise.id)}
+                aria-pressed={completed}
+                aria-label={`${completed ? "Mark incomplete" : "Mark complete"}: ${exercise.title}`}
                 className={cn(
                   "flex items-center gap-3 rounded-2xl border bg-background/70 p-4 text-left transition-all duration-200 hover:border-primary/40",
                   completed && "border-primary/40 bg-primary/5"

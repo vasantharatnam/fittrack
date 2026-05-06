@@ -95,6 +95,8 @@ export function FitnessGoalsStep({ values, onChange }: FitnessGoalsStepProps) {
               type="button"
               onClick={() => toggleGoal(goal.id)}
               disabled={disabled}
+              aria-pressed={selected}
+              aria-label={`${selected ? "Remove" : "Select"} ${goal.title}`}
               className={cn(
                 "group relative overflow-hidden rounded-3xl border bg-background/70 p-5 text-left transition-all duration-300",
                 selected

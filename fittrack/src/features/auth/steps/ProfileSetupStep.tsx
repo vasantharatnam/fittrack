@@ -98,6 +98,7 @@ export function ProfileSetupStep({ values, onChange }: ProfileSetupStepProps) {
               <input
                 type="file"
                 accept="image/*"
+                aria-label="Upload profile avatar"
                 onChange={handleAvatarChange}
                 className="sr-only"
               />
@@ -135,6 +136,7 @@ export function ProfileSetupStep({ values, onChange }: ProfileSetupStepProps) {
                 })
               }
               placeholder="ratan_fit"
+              aria-invalid={Boolean(usernameError)}
               className="h-12 rounded-2xl pl-10"
             />
           </div>
@@ -167,13 +169,14 @@ export function ProfileSetupStep({ values, onChange }: ProfileSetupStepProps) {
           </div>
 
           <Textarea
-            value={values.bio}
+            value={values.bio ?? ""}
             onChange={(event) =>
               updateValues({
                 bio: event.target.value,
               })
             }
             placeholder="Building consistency one workout at a time..."
+            aria-invalid={Boolean(bioError)}
             className="min-h-24 resize-none rounded-2xl"
           />
 

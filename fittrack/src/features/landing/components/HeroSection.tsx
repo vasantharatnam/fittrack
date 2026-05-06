@@ -58,8 +58,10 @@ export  default function HeroSection() {
             </Button>
 
             <Button
+              type="button"
               size="lg"
               variant="outline"
+              aria-label="Watch FitTrack product demo"
               className="h-12 rounded-full bg-background/70 px-6 backdrop-blur"
             >
               <PlayCircle className="mr-2 size-4" />
@@ -99,6 +101,7 @@ export  default function HeroSection() {
 function HeroMockup() {
   return (
     <motion.div
+      aria-hidden="true"
       initial={{ opacity: 0, scale: 0.92, y: 32 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.75, ease: "easeOut", delay: 0.1 }}

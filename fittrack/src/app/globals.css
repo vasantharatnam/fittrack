@@ -173,6 +173,14 @@
     cursor: pointer;
   }
 
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
   ::selection {
     @apply bg-primary text-primary-foreground;
   }
@@ -207,5 +215,12 @@
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-safe-only {
+      animation: none !important;
+      transition: none !important;
+    }
   }
 }

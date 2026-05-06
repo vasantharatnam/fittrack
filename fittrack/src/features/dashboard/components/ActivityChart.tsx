@@ -33,7 +33,11 @@ export function ActivityChart() {
         </div>
       </div>
 
-      <div className="h-64 w-full sm:h-72">
+      <div
+        className="h-64 w-full sm:h-72"
+        role="img"
+        aria-label="Bar chart showing active minutes from Monday to Sunday"
+      >
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={weeklyActivityData}>
             <CartesianGrid
