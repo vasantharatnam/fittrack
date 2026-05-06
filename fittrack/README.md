@@ -14,14 +14,21 @@ https://your-vercel-link.vercel.app
 
 ## Screenshots
 
-Add screenshots after taking them:
+### Landing Page - Desktop
 
-```txt
-public/screenshots/landing-desktop.png
-public/screenshots/landing-mobile.png
-public/screenshots/auth-flow.png
-public/screenshots/dashboard.png
-```
+![Landing desktop](public/screenshots/landing-desktop.png)
+
+### Landing Page - Mobile
+
+![Landing mobile](public/screenshots/landing-mobile.png)
+
+### Onboarding Flow
+
+![Auth flow](public/screenshots/auth-flow.png)
+
+### Dashboard
+
+![Dashboard](public/screenshots/dashboard.png)
 
 ## Features
 
